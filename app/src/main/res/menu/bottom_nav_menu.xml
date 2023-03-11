@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/personScreen"
+        android:icon="@drawable/ic_person_button"
+        android:title="@string/person_btn" />
+
+    <item
+        android:id="@+id/vpnScreen"
+        android:icon="@drawable/ic_vpn_button"
+        android:title="@string/vpn_btn" />
+
+    <item
+        android:id="@+id/moreInfoScreen"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more_btn" />
+
+</menu>

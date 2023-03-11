@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Multitool</string>
-    <string name="person_btn">Person Button</string>
+    <string name="person_btn">Personal</string>
     <string name="vpn_btn">VPN</string>
     <string name="more_btn">More</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

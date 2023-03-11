@@ -1,30 +1,35 @@
 package ru.juraogurcov.multitool
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import ru.juraogurcov.multitool.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    companion object{
-        val key = "boba"
-    }
-    @SuppressLint("MissingInflatedId")
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val personButton = findViewById<Button>(R.id.percent)
-        val mainText = findViewById<EditText>(R.id.editText)
-        personButton.setOnClickListener {
-            val text = mainText.text
-            val intent = Intent(this, TestActivity :: class.java)
-            intent.putExtra(key, text.toString())
-            startActivity(intent)
-        }
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navView: BottomNavigationView = binding.navView
+
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.personScreen, R.id.vpnScreen, R.id.moreInfoScreen
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
-
 }
