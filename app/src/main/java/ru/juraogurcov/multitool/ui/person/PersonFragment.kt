@@ -1,4 +1,4 @@
-package ru.juraogurcov.multitool.ui.vpn
+package ru.juraogurcov.multitool.ui.person
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import ru.juraogurcov.multitool.databinding.FragmentVPNBinding
+import ru.juraogurcov.multitool.databinding.FragmentPersonBinding
 
-class VPN : Fragment() {
+class PersonFragment : Fragment() {
 
-    private var _binding: FragmentVPNBinding? = null
+    private var _binding: FragmentPersonBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class VPN : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val VPNViewModel =
-            ViewModelProvider(this).get(VPNViewModel::class.java)
+        val personViewModel =
+            ViewModelProvider(this).get(PersonViewModel::class.java)
 
-        _binding = FragmentVPNBinding.inflate(inflater, container, false)
+        _binding = FragmentPersonBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.VPNText
-        VPNViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textPerson
+        personViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

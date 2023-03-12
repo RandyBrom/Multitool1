@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.person.Person">
+    tools:context=".ui.person.PersonFragment">
 
     <ImageView
         android:id="@+id/imageView"
