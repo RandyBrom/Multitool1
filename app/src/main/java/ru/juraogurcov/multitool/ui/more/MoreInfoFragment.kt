@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.juraogurcov.multitool.R
 import ru.juraogurcov.multitool.databinding.FragmentMoreInfoBinding
-class MoreInfo : Fragment() {
+class MoreInfoFragment : Fragment() {
 
     private var _binding: FragmentMoreInfoBinding? = null
 
@@ -30,7 +31,7 @@ class MoreInfo : Fragment() {
 
         val textView: TextView = binding.moreText
         moreInfoViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = R.string.more_btn.toString()
+            textView.text = context?.getString(it)
         }
         return root
     }

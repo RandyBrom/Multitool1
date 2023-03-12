@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/personScreen"
-        android:name="ru.juraogurcov.multitool.ui.person.Person"
+        android:name="ru.juraogurcov.multitool.ui.person.PersonFragment"
         android:label="@string/person_btn"
         tools:layout="@layout/fragment_person" />
 
     <fragment
         android:id="@+id/vpnScreen"
-        android:name="ru.juraogurcov.multitool.ui.vpn.VPN"
+        android:name="ru.juraogurcov.multitool.ui.vpn.VPNFragment"
         android:label="@string/vpn_btn"
         tools:layout="@layout/fragment_v_p_n" />
 
     <fragment
         android:id="@+id/moreInfoScreen"
-        android:name="ru.juraogurcov.multitool.ui.more.MoreInfo"
+        android:name="ru.juraogurcov.multitool.ui.more.MoreInfoFragment"
         android:label="@string/more_btn"
         tools:layout="@layout/fragment_more_info" />
 </navigation>
