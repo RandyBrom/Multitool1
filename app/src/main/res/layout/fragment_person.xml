@@ -5,16 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.person.PersonFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="352dp"
-        android:layout_height="364dp"
-        tools:src="@tools:sample/avatars" />
+    <ImageButton
+        android:id="@+id/profileButtonImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:backgroundTint="@android:color/background_light"
+        android:contentDescription="@string/person_btn"
+        android:scaleType="fitXY"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/textPerson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/person_btn" />
+        android:text="@string/person_btn"/>
 
 </FrameLayout>
