@@ -1,6 +1,5 @@
 package ru.juraogurcov.multitool.ui.person
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,12 +28,18 @@ class PersonFragment : Fragment() {
         val root: View = binding.root
         val profileButtonImage: ImageButton = binding.profileButtonImage
         val textView: TextView = binding.textPerson
+        val renameButton: ImageButton = binding.renameUserButton
+        renameButton.setImageResource(R.drawable.ic_rename)
+        renameButton.setOnClickListener {
+
+        }
         personViewModel.text.observe(viewLifecycleOwner) {
-          textView.text = "Добрый день " + context?.getString(it)
+            textView.text = it
         }
         personViewModel.imageProfileId.observe(viewLifecycleOwner){
             profileButtonImage.setImageResource(it)
         }
+
         return root
     }
 
