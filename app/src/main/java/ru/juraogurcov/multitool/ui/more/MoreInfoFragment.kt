@@ -1,5 +1,6 @@
 package ru.juraogurcov.multitool.ui.more
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,7 @@ class MoreInfoFragment : Fragment() {
         moreInfoViewModel.text.observe(viewLifecycleOwner) {
             textView.text = context?.getString(it)
         }
+
         return root
     }
 

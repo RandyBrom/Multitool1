@@ -9,10 +9,10 @@
         android:id="@+id/profileButtonImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:backgroundTint="@android:color/background_light"
         android:contentDescription="@string/person_btn"
         android:scaleType="fitXY"
         android:layout_marginLeft="10dp"
+        style="@style/MainImageButton"
         android:layout_marginTop="10dp"/>
 
     <ImageButton
@@ -21,9 +21,9 @@
         android:layout_height="48dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="120dp"
-        android:backgroundTint="@android:color/background_light"
         android:contentDescription="@string/person_btn"
         android:scaleType="fitXY"
+        style="@style/MainImageButton"
         tools:src="@drawable/ic_rename" />
 
     <TextView
@@ -34,7 +34,17 @@
         android:layout_marginTop="120dp"
         android:gravity="center_vertical"
         android:textSize="14sp"
-        android:textColor="@color/black"
+        style="@style/TextViewStyle"
         android:text="@string/person_btn" />
+
+    <EditText
+        android:id="@+id/editTextPerson"
+        style="@style/TextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="170dp"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:textSize="14sp" />
 
 </FrameLayout>

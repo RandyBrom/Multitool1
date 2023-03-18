@@ -5,15 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.juraogurcov.multitool.R
+import ru.juraogurcov.multitool.ui.more.UserInfo
 
 class PersonViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-         value = "Добрый день  "
+    fun setUserInfo(userInfo: UserInfo) {
+        _text.value = userInfo
     }
+    private val _text = MutableLiveData<UserInfo>()
+
     private val _imageProfileId = MutableLiveData<Int>().apply {
         value = R.drawable.ic_person_button
     }
-    val text: LiveData<String> = _text
+
+    val text: LiveData<UserInfo> = _text
     val imageProfileId: LiveData<Int> = _imageProfileId
 }
