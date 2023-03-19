@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thirdName">Отчество</string>
+    <string name="secondName">Фамилия</string>
+    <string name="firstName">Имя</string>
+    <string name="dateOfBirth">Дата рождения</string>
+</resources>

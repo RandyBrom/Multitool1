@@ -2,6 +2,11 @@
     <string name="app_name">Multitool</string>
     <string name="person_btn">Personal</string>
     <string name="vpn_btn">VPN</string>
+    <string name="rename_btn">Rename</string>
     <string name="more_btn">More</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="thirdName">Отчество</string>
+    <string name="secondName">Фамилия</string>
+    <string name="firstName">Имя</string>
+    <string name="dateOfBirth">Дата рождения</string>
 </resources>

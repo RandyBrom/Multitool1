@@ -3,48 +3,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.person.PersonFragment">
 
     <ImageButton
         android:id="@+id/profileButtonImage"
+        style="@style/MainImageButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="44dp"
         android:contentDescription="@string/person_btn"
-        android:scaleType="fitXY"
-        android:layout_marginLeft="10dp"
-        style="@style/MainImageButton"
-        android:layout_marginTop="10dp"/>
+        android:scaleType="fitXY" />
 
-    <ImageButton
-        android:id="@+id/rename_user_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="120dp"
-        android:contentDescription="@string/person_btn"
-        android:scaleType="fitXY"
-        style="@style/MainImageButton"
-        tools:src="@drawable/ic_rename" />
-
-    <TextView
-        android:id="@+id/textPerson"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="120dp"
-        android:gravity="center_vertical"
-        android:textSize="14sp"
-        style="@style/TextViewStyle"
-        android:text="@string/person_btn" />
-
-    <EditText
-        android:id="@+id/editTextPerson"
-        style="@style/TextViewStyle"
+    <LinearLayout
+        android:id="@+id/userInfoLayout"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="188dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
-        android:gravity="center_vertical"
-        android:minHeight="48dp"
-        android:textSize="14sp" />
+        android:layout_height="192dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/TextViewStyle"
+            android:clickable="false"
+            android:focusable="false"
+            android:hint="@string/firstName">
+
+            <EditText
+                android:id="@+id/firstNameEditText"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextViewStyle"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/TextViewStyle"
+            android:hint="@string/secondName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/secondNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextViewStyle"
+                android:imeOptions="actionNext"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/TextViewStyle"
+            android:layout_weight="1"
+            android:hint="@string/thirdName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/thirdNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextViewStyle"
+                android:imeOptions="actionNext"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/TextViewStyle"
+            android:layout_weight="1"
+            android:hint="@string/dateOfBirth">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dateOfBirthEditText"
+                style="@style/TextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                 />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
 </FrameLayout>

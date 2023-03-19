@@ -8,18 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import ru.juraogurcov.multitool.R
 import ru.juraogurcov.multitool.databinding.FragmentPersonBinding
 import ru.juraogurcov.multitool.ui.more.UserInfo
+import ru.juraogurcov.multitool.viewUtils.addTextChangeListener
 
 class PersonFragment : Fragment() {
 
     private var _binding: FragmentPersonBinding? = null
     private val binding get() = _binding!!
-    private val accountInfo = context?.getSharedPreferences("AccountInfo", MODE_PRIVATE)
+    private val firstNameKey: String = "FIRST-NAME"
+    private val secondNameKey: String = "SECOND-NAME"
+    private val thirdNameKey: String = "THIRD-NAME"
+    private val dateOfBirthKey: String = "BIRTHDATE"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,41 +31,46 @@ class PersonFragment : Fragment() {
     ): View {
         val personViewModel =
             ViewModelProvider(this).get(PersonViewModel::class.java)
-
         _binding = FragmentPersonBinding.inflate(inflater, container, false)
+        val accountInfoSharedPref = context?.getSharedPreferences("AccountInfo", MODE_PRIVATE)  // lifeData file
         val root: View = binding.root
         val profileButtonImage: ImageButton = binding.profileButtonImage
-        val textView: TextView = binding.textPerson
-        val renameButton: ImageButton = binding.renameUserButton
-        renameButton.setImageResource(R.drawable.ic_rename)
-        renameButton.setOnClickListener {
+        val firstName = accountInfoSharedPref?.getString(firstNameKey, null)
+        val secondName = accountInfoSharedPref?.getString(secondNameKey, null)
+        val thirdName = accountInfoSharedPref?.getString(thirdNameKey, null)
+        val dayOfBirth = accountInfoSharedPref?.getString(dateOfBirthKey, null)
 
+        personViewModel.setUserInfo(UserInfo(firstName, secondName, thirdName, dayOfBirth))
+        binding.firstNameEditText.addTextChangeListener {
+            accountInfoSharedPref?.edit()?.putString(firstNameKey, it.toString() )?.apply()
+        }
+        binding.secondNameEditText.addTextChangeListener {
+            accountInfoSharedPref?.edit()?.putString(secondNameKey, it.toString())?.apply()
+        }
+        binding.thirdNameEditText.addTextChangeListener {
+            accountInfoSharedPref?.edit()?.putString(thirdNameKey, it.toString())?.apply()
+        }
+        binding.dateOfBirthEditText.addTextChangeListener{
+            accountInfoSharedPref?.edit()?.putString(dateOfBirthKey, it.toString())?.apply()
+        }
+        personViewModel.textUserInfo.observe(viewLifecycleOwner) {  //getting updates from view model
+            if(it.firstNameUser != null) {
+                binding.firstNameEditText.setText(it.firstNameUser)
+            }
+            if(it.secondNameUser != null) {
+                binding.secondNameEditText.setText(it.secondNameUser)
+            }
+            if(it.thirdNameUser != null) {
+                binding.thirdNameEditText.setText(it.thirdNameUser)
+            }
+            if(it.dayOfBirthUser != null) {
+                binding.dateOfBirthEditText.setText(it.dayOfBirthUser)
+            }
         }
 
-        personViewModel.text.observe(viewLifecycleOwner) {
-            binding.editTextPerson.setText(it.nameUser)
-        }
         personViewModel.imageProfileId.observe(viewLifecycleOwner){
             profileButtonImage.setImageResource(it)
         }
-        val name = accountInfo?.getString("Name", null)
-        personViewModel.setUserInfo(UserInfo(name))
-        binding.editTextPerson.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                accountInfo?.edit()?.putString("Name", s.toString())?.apply()
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-
-            }
-
-        })
         return root
     }
 
