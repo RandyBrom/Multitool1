@@ -5,7 +5,7 @@
             @color/white
         </item>
     </style>
-    <style name="TextViewStyle" parent="Widget.AppCompat.TextView">
+    <style name="EditTextViewStyle" parent="Widget.AppCompat.TextView">
         <item name="backgroundTint">
             @color/white
         </item>
@@ -20,6 +20,9 @@
         </item>
         <item name="boxStrokeWidth">
             0dp
+        </item>
+        <item name="android:inputType">
+            text
         </item>
     </style>
 
