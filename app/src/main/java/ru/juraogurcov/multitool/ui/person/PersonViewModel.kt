@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.juraogurcov.multitool.R
-import ru.juraogurcov.multitool.ui.more.UserInfo
 
 class PersonViewModel : ViewModel() {
     fun setUserInfo(userInfo: UserInfo) {  // sending package of data to class with list of data types
