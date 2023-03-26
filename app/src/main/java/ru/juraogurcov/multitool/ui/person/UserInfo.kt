@@ -1,6 +1,7 @@
 package ru.juraogurcov.multitool.ui.person
 
 import android.graphics.drawable.Drawable
+import android.text.style.LineHeightSpan
 
 data class UserInfo(
     val firstNameUser: String?,
@@ -9,5 +10,8 @@ data class UserInfo(
     val dayOfBirthUser: String?
 )
 data class UserImage(
-    val avatar: Drawable
+    val id: String?,
+    val url: String?,
+    val width: Int?,
+    val height: Int?
 )

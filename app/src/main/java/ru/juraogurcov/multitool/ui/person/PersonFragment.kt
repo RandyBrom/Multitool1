@@ -2,6 +2,7 @@ package ru.juraogurcov.multitool.ui.person
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,14 +11,19 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.android.volley.Response
+import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.HurlStack
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 import ru.juraogurcov.multitool.databinding.FragmentPersonBinding
+import ru.juraogurcov.multitool.network.InputStreamVolleyRequest
 import ru.juraogurcov.multitool.viewUtils.addTextChangeListener
 
-class PersonFragment : Fragment() {
+
+class PersonFragment : Fragment(), Response.Listener<ByteArray> {
 
     private var _binding: FragmentPersonBinding? = null
     private val binding get() = _binding!!
@@ -53,7 +59,7 @@ class PersonFragment : Fragment() {
         buttonRename.setOnClickListener {
             binding.firstNameEditText.isEnabled = true
         }
-        //getImageResult()
+        getImageResult()
         personViewModel.imageProfileId.observe(viewLifecycleOwner){
             profileButtonImage.setImageResource(it)
         }
@@ -102,24 +108,38 @@ class PersonFragment : Fragment() {
     }
     private fun getImageResult(){
         val qeqeq = Volley.newRequestQueue(context)
-        val stringRequest = StringRequest(com.android.volley.Request.Method.GET,
+        val inputString = InputStreamVolleyRequest<UserImage>(com.android.volley.Request.Method.GET,
         urlAvatar,
             {
             response ->
-            Log.d("Tag", response)
-                val imageUrl = JSONArray(response).getJSONObject(0).getString("url")
-                val imageId = JSONArray(response).getJSONObject(0).getString("id")
-                Log.d("Tag", imageUrl)
-
-            },
-            {
-
+                Log.d("Tag", response.toString())
+                val inputStream = InputStreamVolleyRequest(com.android.volley.Request.Method.GET, response.url.toString(), this){
+                    Response.success(it?.data, HttpHeaderParser.parseCacheHeaders(it))
+                }
+                qeqeq.add(inputStream)
+            }, {
+               // return try {
+                    Response.success(UserImage(
+                        JSONArray(it?.data.toString()).getJSONObject(0).getString("id"),
+                        JSONArray(it?.data).getJSONObject(0).getString("url"),
+                        JSONArray(it?.data).getJSONObject(0).getInt("width"),
+                        JSONArray(it?.data).getJSONObject(0).getInt("height")
+                    ), null)
+              /*  } catch (
+                    t: Throwable
+                ){
+                  Response.error<UserImage>(t)
+                }*/
             }
         )
-        qeqeq.add(stringRequest)
+        qeqeq.add(inputString)
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResponse(response: ByteArray?) {
+        Log.d("Tagy", response.toString())
     }
 }
