@@ -5,6 +5,32 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.person.PersonFragment">
+        <FrameLayout
+            android:id="@+id/topPanel"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/container" >
+
+            <ImageButton
+                android:id="@+id/topPanelRenameButton"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="end"
+                style="@style/MainImageButton"
+                app:srcCompat="@drawable/ic_rename"
+                android:contentDescription="@string/rename_btn" />
+
+            <TextView
+                android:id="@+id/topPanelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                style="@style/EditTextViewStyle"
+                />
+        </FrameLayout>
 
     <ImageButton
         android:id="@+id/profileButtonImage"
@@ -12,29 +38,28 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="100dp"
         android:contentDescription="@string/person_btn"
         android:scaleType="fitXY" />
 
     <LinearLayout
         android:id="@+id/userInfoLayout"
         android:layout_width="match_parent"
-        android:layout_height="192dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="244dp"
         android:layout_marginRight="16dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/EditTextViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="60dp"
             android:hint="@string/firstName"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/firstNameEditText"
                 style="@style/EditTextViewStyle"
                 android:layout_width="match_parent"
@@ -45,8 +70,8 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/EditTextViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="60dp"
+
             app:boxCornerRadiusTopStart="0dp"
             app:boxCornerRadiusTopEnd="0dp"
             android:hint="@string/secondName">
@@ -62,8 +87,8 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/EditTextViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="60dp"
+
             app:boxCornerRadiusTopStart="0dp"
             app:boxCornerRadiusTopEnd="0dp"
             android:hint="@string/thirdName">
@@ -79,8 +104,8 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/EditTextViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="60dp"
+
             app:boxCornerRadiusTopStart="0dp"
             app:boxCornerRadiusTopEnd="0dp"
             app:boxCornerRadiusBottomStart="20dp"

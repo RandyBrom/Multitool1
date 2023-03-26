@@ -38,7 +38,8 @@ class PersonFragment : Fragment() {
         val accountInfoSharedPref = context?.getSharedPreferences("AccountInfo", MODE_PRIVATE)  // lifeData file
         val root: View = binding.root
         val profileButtonImage: ImageButton = binding.profileButtonImage
-            editLiveDataText(personViewModel, accountInfoSharedPref)
+        val buttonRename: ImageButton = binding.topPanelRenameButton
+        editLiveDataText(personViewModel, accountInfoSharedPref)
 
         personViewModel.textUserInfo.observe(viewLifecycleOwner) {  //getting updates from view model
            observeLiveDataText(it)
@@ -47,7 +48,12 @@ class PersonFragment : Fragment() {
         profileButtonImage.setOnClickListener {
 
         }
-        getImageResult()
+        binding.firstNameEditText.isEnabled = false
+
+        buttonRename.setOnClickListener {
+            binding.firstNameEditText.isEnabled = true
+        }
+        //getImageResult()
         personViewModel.imageProfileId.observe(viewLifecycleOwner){
             profileButtonImage.setImageResource(it)
         }
