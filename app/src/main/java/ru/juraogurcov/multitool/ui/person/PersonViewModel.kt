@@ -3,19 +3,17 @@ package ru.juraogurcov.multitool.ui.person
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.juraogurcov.multitool.R
 
 class PersonViewModel : ViewModel() {
-    fun setUserInfo(userInfo: UserInfo) {  // sending package of data to class with list of data types
-        _textUserInfo.value = userInfo
-
+    fun setUserInfo(userInfoData: UserInfoData) {  // sending package of data to class with list of data types
+        _textUserInfoData.value = userInfoData
     }
-    private val _textUserInfo = MutableLiveData<UserInfo>()
+    private val _textUserInfoData = MutableLiveData<UserInfoData>()
 
-    private val _imageProfileId = MutableLiveData<Int>().apply {
-        value = R.drawable.ic_person_button
+    fun setUserAvatarInfo(userAvatarInfo: UserImageData) {  // sending package of data to class with list of data types
+        _imageProfileInfo.value = userAvatarInfo
     }
-
-    val textUserInfo: LiveData<UserInfo> = _textUserInfo
-    val imageProfileId: LiveData<Int> = _imageProfileId
+    private val _imageProfileInfo = MutableLiveData<UserImageData>()
+    val textUserInfoData: LiveData<UserInfoData> = _textUserInfoData
+    val imageProfileInfo: LiveData<UserImageData> = _imageProfileInfo
 }
