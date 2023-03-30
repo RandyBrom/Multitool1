@@ -50,8 +50,7 @@ class PersonFragment : Fragment() {
            // observeLiveDataImage()
         }
         profileButtonImage.setOnClickListener {
-            val qeqeq = Volley.newRequestQueue(context)
-            val urlImage = getHTTPSSource(urlAvatar, accountInfoSharedPref, qeqeq, urlImageKey)
+            val urlImage = getHTTPSSource(urlAvatar, accountInfoSharedPref, context, urlImageKey)
             val bitmapImageAvatar = getBitmapFromUrl(urlImage, context)
             saveImageFromBitmap(context, bitmapImageAvatar)
         }
