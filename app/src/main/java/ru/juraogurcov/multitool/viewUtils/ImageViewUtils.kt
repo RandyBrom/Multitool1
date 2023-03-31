@@ -12,7 +12,6 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
@@ -24,23 +23,31 @@ private val idImageKey: String = "IDIMAGE"
 fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences?, context: Context?, urlImageKey: String): String{
     var urlImage = ""
     val queue = Volley.newRequestQueue(context)
+
         val stringRequest = StringRequest(
             Request.Method.GET,
             urlImageResorse,
-            {
-                response ->
+            { response ->
 
-                    urlImage = JSONArray(response).getJSONObject(0).getString("url")
-                    sharedPreferences?.edit()?.putString(urlImageKey, JSONArray(response).getJSONObject(0).getString("url"))?.apply()
-                    sharedPreferences?.edit()?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))?.apply()
+                urlImage = JSONArray(response).getJSONObject(0).getString("url")
+                Log.d("Tag", JSONArray(response).getJSONObject(0).getString("url"))
+                sharedPreferences?.edit()
+                    ?.putString(urlImageKey, JSONArray(response).getJSONObject(0).getString("url"))
+                    ?.apply()
+                sharedPreferences?.edit()
+                    ?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))
+                    ?.apply()
                 Log.d("Tag", urlImage)
-
             },
             {
-
+            Log.d("Tag", "No Result")
             }
-                                        )
-    queue.add(stringRequest)
+        )
+        queue.add(stringRequest)
+        queue.start()
+    while (urlImage == "") {
+
+    }
     return urlImage
 }
 
