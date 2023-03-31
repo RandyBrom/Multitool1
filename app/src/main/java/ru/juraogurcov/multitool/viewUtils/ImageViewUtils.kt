@@ -11,10 +11,13 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
+import ru.juraogurcov.multitool.ui.person.PersonViewModel
+import ru.juraogurcov.multitool.ui.person.UserImageData
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
@@ -30,14 +33,10 @@ fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences
             { response ->
 
                 urlImage = JSONArray(response).getJSONObject(0).getString("url")
-                Log.d("Tag", JSONArray(response).getJSONObject(0).getString("url"))
-                sharedPreferences?.edit()
-                    ?.putString(urlImageKey, JSONArray(response).getJSONObject(0).getString("url"))
-                    ?.apply()
-                sharedPreferences?.edit()
-                    ?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))
-                    ?.apply()
+                sharedPreferences?.edit()?.putString(urlImageKey, JSONArray(response).getJSONObject(0).getString("url"))?.apply()
+                sharedPreferences?.edit()?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))?.apply()
                 Log.d("Tag", urlImage)
+                PersonViewModel.setUserAvatarInfo(UserImageData(null, urlImage, null, null))
             },
             {
             Log.d("Tag", "No Result")
@@ -45,9 +44,6 @@ fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences
         )
         queue.add(stringRequest)
         queue.start()
-    while (urlImage == "") {
-
-    }
     return urlImage
 }
 

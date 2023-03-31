@@ -47,12 +47,11 @@ class PersonFragment : Fragment() {
            observeLiveDataText(it)
         }
         personViewModel.imageProfileInfo.observe(viewLifecycleOwner){
-           // observeLiveDataImage()
+           observeLiveDataImage(it)
         }
         profileButtonImage.setOnClickListener {
             val urlImage = getHTTPSSource(urlAvatar, accountInfoSharedPref, context, urlImageKey)
-            val bitmapImageAvatar = getBitmapFromUrl(urlImage, context)
-            saveImageFromBitmap(context, bitmapImageAvatar)
+
         }
 
         binding.topPanelRenameButton.setOnClickListener {
@@ -65,6 +64,13 @@ class PersonFragment : Fragment() {
     /**
      * Проверка обновлений LiveData
      */
+
+    private fun observeLiveDataImage(it: UserImageData){
+        if(it.url != null) {
+            val bitmapImageAvatar = getBitmapFromUrl(it.url, context)
+            saveImageFromBitmap(context, bitmapImageAvatar)
+        }
+    }
     private fun observeLiveDataText(it: UserInfoData){
         if(it.firstNameUser != null) {
         binding.firstNameEditText.setText(it.firstNameUser)
@@ -78,7 +84,7 @@ class PersonFragment : Fragment() {
         if(it.dayOfBirthUser != null) {
         binding.dateOfBirthEditText.setText(it.dayOfBirthUser)
         }
-}
+    }
 
     /**
      * Прослушивание и запись данных из EditText

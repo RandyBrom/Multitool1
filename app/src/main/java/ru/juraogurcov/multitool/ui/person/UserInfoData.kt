@@ -7,8 +7,8 @@ data class UserInfoData(
     val dayOfBirthUser: String?
 )
 data class UserImageData(
-    var id: String?,
-    var url: String?,
-    var width: Int?,
-    var height: Int?
+    val id: String?,
+    val url: String?,
+    val width: Int?,
+    val height: Int?
 )

@@ -10,10 +10,14 @@ class PersonViewModel : ViewModel() {
     }
     private val _textUserInfoData = MutableLiveData<UserInfoData>()
 
-    fun setUserAvatarInfo(userAvatarInfo: UserImageData) {  // sending package of data to class with list of data types
-        _imageProfileInfo.value = userAvatarInfo
+    companion object {
+        fun setUserAvatarInfo(userAvatarInfo: UserImageData) {  // sending package of data to class with list of data types
+            _imageProfileInfo.value = userAvatarInfo
+        }
+
+        private val _imageProfileInfo = MutableLiveData<UserImageData>()
     }
-    private val _imageProfileInfo = MutableLiveData<UserImageData>()
     val textUserInfoData: LiveData<UserInfoData> = _textUserInfoData
     val imageProfileInfo: LiveData<UserImageData> = _imageProfileInfo
+
 }
