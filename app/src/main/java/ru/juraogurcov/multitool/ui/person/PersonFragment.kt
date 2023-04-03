@@ -2,6 +2,7 @@ package ru.juraogurcov.multitool.ui.person
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.volley.toolbox.Volley
 import ru.juraogurcov.multitool.R
 import ru.juraogurcov.multitool.databinding.FragmentPersonBinding
 import ru.juraogurcov.multitool.viewUtils.addTextChangeListener
@@ -26,7 +26,7 @@ class PersonFragment : Fragment() {
     private val secondNameKey: String = "SECOND-NAME"
     private val thirdNameKey: String = "THIRD-NAME"
     private val dateOfBirthKey: String = "BIRTHDATE"
-    private val idImageKey: String = "IDIMAGE"
+    private val pathImageKey: String = "PATHIMAGE"
     private val urlImageKey: String = "URLIMAGE"
     private val keyForApi: String = "live_1xfROQEgx3GT6uCa4fiDj9hQeDOm8r1NJfFsh63Jh736v6gYdZAUaEtFLAz4yCgr"
     private  val urlAvatar: String = "https://api.thecatapi.com/v1/images/search? api_key=$keyForApi"
@@ -42,12 +42,19 @@ class PersonFragment : Fragment() {
         val root: View = binding.root
         val profileButtonImage: ImageButton = binding.profileButtonImage
         editLiveDataText(personViewModel, accountInfoSharedPref)
-
+        if(accountInfoSharedPref?.getString(pathImageKey, null) != null){
+            val imageBitmap =  BitmapFactory.decodeFile(accountInfoSharedPref.getString(pathImageKey, null))
+            profileButtonImage.setImageBitmap(imageBitmap)
+        }
         personViewModel.textUserInfoData.observe(viewLifecycleOwner) {  //getting updates from view model
            observeLiveDataText(it)
         }
         personViewModel.imageProfileInfo.observe(viewLifecycleOwner){
-           observeLiveDataImage(it)
+           observeLiveDataImage(it, accountInfoSharedPref)
+            if(accountInfoSharedPref?.getString(pathImageKey, null) != null){
+                val imageBitmap =  BitmapFactory.decodeFile(accountInfoSharedPref.getString(pathImageKey, null))
+                profileButtonImage.setImageBitmap(imageBitmap)
+            }
         }
         profileButtonImage.setOnClickListener {
             val urlImage = getHTTPSSource(urlAvatar, accountInfoSharedPref, context, urlImageKey)
@@ -65,10 +72,16 @@ class PersonFragment : Fragment() {
      * Проверка обновлений LiveData
      */
 
-    private fun observeLiveDataImage(it: UserImageData){
+    private fun observeLiveDataImage(it: UserImageData, sharedPreferences: SharedPreferences?){
         if(it.url != null) {
-            val bitmapImageAvatar = getBitmapFromUrl(it.url, context)
-            saveImageFromBitmap(context, bitmapImageAvatar)
+            Thread {
+                kotlin.run {
+                    val bitmapImageAvatar = getBitmapFromUrl(it.url, context)
+                    saveImageFromBitmap(context, bitmapImageAvatar, sharedPreferences)
+                }
+            }.start()
+            val imageBitmap =  BitmapFactory.decodeFile(sharedPreferences?.getString(pathImageKey, null))
+            binding.profileButtonImage.setImageBitmap(imageBitmap)
         }
     }
     private fun observeLiveDataText(it: UserInfoData){

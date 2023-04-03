@@ -37,6 +37,7 @@ fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences
                 sharedPreferences?.edit()?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))?.apply()
                 Log.d("Tag", urlImage)
                 PersonViewModel.setUserAvatarInfo(UserImageData(null, urlImage, null, null))
+                Toast.makeText(context, "URL Got", Toast.LENGTH_SHORT).show()
             },
             {
             Log.d("Tag", "No Result")
@@ -63,7 +64,7 @@ fun getBitmapFromUrl(uRL: String, context: Context?): Bitmap? {
     return null
 }
 
-fun saveImageFromBitmap(context: Context?, imageBitmap: Bitmap?){
+fun saveImageFromBitmap(context: Context?, imageBitmap: Bitmap?, sharedPreferences: SharedPreferences?){
     val filename = "ic_avatar.jpg"
     var fos: OutputStream? = null
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -77,8 +78,9 @@ fun saveImageFromBitmap(context: Context?, imageBitmap: Bitmap?){
                 fos = imageUri?.let { resolver.openOutputStream(it) }
             }
         } else {
-            val imagesDir = Environment.getExternalStorageDirectory()
+            val imagesDir = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             val image = File(imagesDir, filename)
+            sharedPreferences?.edit()?.putString("PATHIMAGE", image.path)?.apply()
             fos = FileOutputStream(image)
         }
         fos?.use {
