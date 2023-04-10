@@ -23,6 +23,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 private val idImageKey: String = "IDIMAGE"
+
+// TODO тут пока что контекст оставь. Потом придумаем как от него избавиться. Остальное вроде норм
 fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences?, context: Context?, urlImageKey: String): String{
     var urlImage = ""
     val queue = Volley.newRequestQueue(context)
@@ -36,6 +38,9 @@ fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences
                 sharedPreferences?.edit()?.putString(urlImageKey, JSONArray(response).getJSONObject(0).getString("url"))?.apply()
                 sharedPreferences?.edit()?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))?.apply()
                 Log.d("Tag", urlImage)
+                // TODO кроме этого статистический метод для записи значений не лучшее решение. Всё таки нужно переделывать будет
+                // TODO на callBack. Если захочешь сам пеоеделать, то пример в файле EditTextUtils, функция addTextChangeListener.
+                // TODO onChange - это и есть callBack
                 PersonViewModel.setUserAvatarInfo(UserImageData(null, urlImage, null, null))
                 Toast.makeText(context, "URL Got", Toast.LENGTH_SHORT).show()
             },
@@ -48,6 +53,7 @@ fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences
     return urlImage
 }
 
+// TODO опять же контекст передавать. Тупо для того, что бы показать тост
 fun getBitmapFromUrl(uRL: String, context: Context?): Bitmap? {
     val url = URL(uRL)
     val connection: HttpURLConnection?
@@ -64,6 +70,8 @@ fun getBitmapFromUrl(uRL: String, context: Context?): Bitmap? {
     return null
 }
 
+// TODO передавать контекст не рекоммендуюется. И сама суть метода не будет работать на версии андроида выше 10
+// TODO он тупо не сможет достать картинку, потому что там выдаётся временный путь какой то и по нему нельзя из загрузок получить картинку
 fun saveImageFromBitmap(context: Context?, imageBitmap: Bitmap?, sharedPreferences: SharedPreferences?){
     val filename = "ic_avatar.jpg"
     var fos: OutputStream? = null
@@ -80,6 +88,8 @@ fun saveImageFromBitmap(context: Context?, imageBitmap: Bitmap?, sharedPreferenc
         } else {
             val imagesDir = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             val image = File(imagesDir, filename)
+            // TODO полный путь нет смысла сохранять, так как директория может изменится. Имя файла тебе известно заранее (69 строка)
+            // TODO так что можно ничего этого не сохранять
             sharedPreferences?.edit()?.putString("PATHIMAGE", image.path)?.apply()
             fos = FileOutputStream(image)
         }

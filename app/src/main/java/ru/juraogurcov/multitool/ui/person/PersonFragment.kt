@@ -21,6 +21,8 @@ class PersonFragment : Fragment() {
 
     private var _binding: FragmentPersonBinding? = null
     private val binding get() = _binding!!
+
+    // TODO этот флаг лучше хранить в вью модели, т.к. при повороте экрана или иной смене конфигурации редактирования пользователя пропадают
     private var flagRename = false
     private val firstNameKey: String = "FIRST-NAME"
     private val secondNameKey: String = "SECOND-NAME"
@@ -28,6 +30,7 @@ class PersonFragment : Fragment() {
     private val dateOfBirthKey: String = "BIRTHDATE"
     private val pathImageKey: String = "PATHIMAGE"
     private val urlImageKey: String = "URLIMAGE"
+    // TODO ключ так нельзя хранить. Для этого используют local.proprties (у тебя есть такой файл в gradleScripts в вкладке project)
     private val keyForApi: String = "live_1xfROQEgx3GT6uCa4fiDj9hQeDOm8r1NJfFsh63Jh736v6gYdZAUaEtFLAz4yCgr"
     private  val urlAvatar: String = "https://api.thecatapi.com/v1/images/search? api_key=$keyForApi"
     override fun onCreateView(
@@ -35,19 +38,24 @@ class PersonFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // TODO вынести переменную к binding (24 строка) и попробовать использовать by viewmodels<название вью модели>()
+        // TODO это позволит не передавать её в функции в качестве аргумента (48 строка), а использовать везде, где вздумается
         val personViewModel =
             ViewModelProvider(this).get(PersonViewModel::class.java)
         _binding = FragmentPersonBinding.inflate(inflater, container, false)
         val accountInfoSharedPref = context?.getSharedPreferences("AccountInfo", MODE_PRIVATE)  // lifeData file
         val root: View = binding.root
+        // TODO в этом callback (onCreateView) нельзя работать с вьюхами экрана. Их использовать можно только начиная с onViewCreated
         val profileButtonImage: ImageButton = binding.profileButtonImage
         editLiveDataText(personViewModel, accountInfoSharedPref)
         if(accountInfoSharedPref?.getString(pathImageKey, null) != null){
+            // TODO как раз таки ты пытаешься установить изображение до того, как вью раздулась
             val imageBitmap =  BitmapFactory.decodeFile(accountInfoSharedPref.getString(pathImageKey, null))
             profileButtonImage.setImageBitmap(imageBitmap)
         }
         personViewModel.textUserInfoData.observe(viewLifecycleOwner) {  //getting updates from view model
-           observeLiveDataText(it)
+            // TODO и тут тоже. В общем и целом нужно это дело выность в onViewCreated
+            observeLiveDataText(it)
         }
         personViewModel.imageProfileInfo.observe(viewLifecycleOwner){
            observeLiveDataImage(it, accountInfoSharedPref)
@@ -56,6 +64,7 @@ class PersonFragment : Fragment() {
                 profileButtonImage.setImageBitmap(imageBitmap)
             }
         }
+        // TODO просто уходит запрос в сеть и никак не используется
         profileButtonImage.setOnClickListener {
             val urlImage = getHTTPSSource(urlAvatar, accountInfoSharedPref, context, urlImageKey)
 
