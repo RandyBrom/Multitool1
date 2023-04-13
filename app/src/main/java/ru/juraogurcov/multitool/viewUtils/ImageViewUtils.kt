@@ -13,6 +13,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
@@ -23,9 +24,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 private val idImageKey: String = "IDIMAGE"
-fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences?, context: Context?, urlImageKey: String): String{
+fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences?, queue: RequestQueue, urlImageKey: String): String{
     var urlImage = ""
-    val queue = Volley.newRequestQueue(context)
+
 
         val stringRequest = StringRequest(
             Request.Method.GET,
@@ -37,7 +38,6 @@ fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences
                 sharedPreferences?.edit()?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))?.apply()
                 Log.d("Tag", urlImage)
                 PersonViewModel.setUserAvatarInfo(UserImageData(null, urlImage, null, null))
-                Toast.makeText(context, "URL Got", Toast.LENGTH_SHORT).show()
             },
             {
             Log.d("Tag", "No Result")
@@ -48,7 +48,7 @@ fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences
     return urlImage
 }
 
-fun getBitmapFromUrl(uRL: String, context: Context?): Bitmap? {
+fun getBitmapFromUrl(uRL: String): Bitmap? {
     val url = URL(uRL)
     val connection: HttpURLConnection?
     try {
@@ -59,32 +59,18 @@ fun getBitmapFromUrl(uRL: String, context: Context?): Bitmap? {
         return BitmapFactory.decodeStream(bufferedInputStream)
     } catch (e: IOException) {
         e.printStackTrace()
-        Toast.makeText(context, "Error", Toast.LENGTH_LONG).show()
     }
     return null
 }
 
-fun saveImageFromBitmap(context: Context?, imageBitmap: Bitmap?, sharedPreferences: SharedPreferences?){
+fun saveImageFromBitmap(imagesDir: File?, imageBitmap: Bitmap?, sharedPreferences: SharedPreferences?){
     val filename = "ic_avatar.jpg"
     var fos: OutputStream? = null
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        context?.contentResolver?.also { resolver ->
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-                }
-                val imageUri: Uri? = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-                fos = imageUri?.let { resolver.openOutputStream(it) }
-            }
-        } else {
-            val imagesDir = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            val image = File(imagesDir, filename)
-            sharedPreferences?.edit()?.putString("PATHIMAGE", image.path)?.apply()
-            fos = FileOutputStream(image)
-        }
-        fos?.use {
-           imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, it)
-        }
+    val image = File(imagesDir, filename)
+    sharedPreferences?.edit()?.putString("PATHIMAGE", image.path)?.apply()
+    fos = FileOutputStream(image)
+    fos.use {
+        imageBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, it)
+    }
 }
 

@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.vpn.VPNFragment">
 
-    <TextView
-        android:id="@+id/VPNText"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageButton
+            android:id="@+id/syncButtonVPN"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_sync"
+            android:layout_marginStart="350dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="Выбор сервера"
+            style="@style/BaseText"
+
+            >
+        </TextView>
+
+    </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="580dp"
+        android:clickable="true"
+        android:contentDescription="@string/addserver"
+        android:focusable="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_add_button"
+        app:maxImageSize="50dp" />
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/vpn_btn" />
-
+        android:layout_marginTop="50dp"
+        >
+    </ListView>
 </FrameLayout>

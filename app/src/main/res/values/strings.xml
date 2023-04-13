@@ -9,4 +9,10 @@
     <string name="secondName">Фамилия</string>
     <string name="firstName">Имя</string>
     <string name="dateOfBirth">Дата рождения</string>
+    <string name="addserver">AddServer</string>
+    <string name="nameServer">Название сервера</string>
+    <string name="adressServer">IP сервера</string>
+    <string name="userNameServer">Имя пользователя</string>
+    <string name="userPassServer">Пароль</string>
+    <string name="publicKeyServer">Ключ сервера</string>
 </resources>

@@ -4,4 +4,5 @@
     <string name="secondName">Фамилия</string>
     <string name="firstName">Имя</string>
     <string name="dateOfBirth">Дата рождения</string>
+    <string name="addserver">AddServer</string>
 </resources>

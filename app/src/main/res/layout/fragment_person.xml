@@ -32,15 +32,29 @@
                 />
         </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/profileButtonImage"
+    <com.google.android.material.card.MaterialCardView
         style="@style/MainImageButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="100dp"
         android:contentDescription="@string/person_btn"
-        android:scaleType="fitXY" />
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+
+        app:contentPadding="0dp">
+
+        <ImageView
+            android:id="@+id/profileButtonImage"
+            style="@style/MainImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/person_btn"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_person_button" />
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:id="@+id/userInfoLayout"

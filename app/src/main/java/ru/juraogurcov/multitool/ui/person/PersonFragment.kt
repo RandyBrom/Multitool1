@@ -4,12 +4,14 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.android.volley.toolbox.Volley
 import ru.juraogurcov.multitool.R
 import ru.juraogurcov.multitool.databinding.FragmentPersonBinding
 import ru.juraogurcov.multitool.viewUtils.addTextChangeListener
@@ -40,25 +42,20 @@ class PersonFragment : Fragment() {
         _binding = FragmentPersonBinding.inflate(inflater, container, false)
         val accountInfoSharedPref = context?.getSharedPreferences("AccountInfo", MODE_PRIVATE)  // lifeData file
         val root: View = binding.root
-        val profileButtonImage: ImageButton = binding.profileButtonImage
         editLiveDataText(personViewModel, accountInfoSharedPref)
         if(accountInfoSharedPref?.getString(pathImageKey, null) != null){
             val imageBitmap =  BitmapFactory.decodeFile(accountInfoSharedPref.getString(pathImageKey, null))
-            profileButtonImage.setImageBitmap(imageBitmap)
+            binding.profileButtonImage.setImageBitmap(imageBitmap)
         }
         personViewModel.textUserInfoData.observe(viewLifecycleOwner) {  //getting updates from view model
            observeLiveDataText(it)
         }
         personViewModel.imageProfileInfo.observe(viewLifecycleOwner){
            observeLiveDataImage(it, accountInfoSharedPref)
-            if(accountInfoSharedPref?.getString(pathImageKey, null) != null){
-                val imageBitmap =  BitmapFactory.decodeFile(accountInfoSharedPref.getString(pathImageKey, null))
-                profileButtonImage.setImageBitmap(imageBitmap)
-            }
         }
-        profileButtonImage.setOnClickListener {
-            val urlImage = getHTTPSSource(urlAvatar, accountInfoSharedPref, context, urlImageKey)
-
+        binding.profileButtonImage.setOnClickListener {
+            val queue = Volley.newRequestQueue(context)
+            val urlImage = getHTTPSSource(urlAvatar, accountInfoSharedPref, queue, urlImageKey)
         }
 
         binding.topPanelRenameButton.setOnClickListener {
@@ -76,12 +73,15 @@ class PersonFragment : Fragment() {
         if(it.url != null) {
             Thread {
                 kotlin.run {
-                    val bitmapImageAvatar = getBitmapFromUrl(it.url, context)
-                    saveImageFromBitmap(context, bitmapImageAvatar, sharedPreferences)
+                    val bitmapImageAvatar = getBitmapFromUrl(it.url)
+                    val imagesDir = context?.filesDir
+                    saveImageFromBitmap(imagesDir, bitmapImageAvatar, sharedPreferences)
+                    Handler(Looper.getMainLooper()).post {
+                        binding.profileButtonImage.setImageBitmap(bitmapImageAvatar)
+                    }
                 }
             }.start()
-            val imageBitmap =  BitmapFactory.decodeFile(sharedPreferences?.getString(pathImageKey, null))
-            binding.profileButtonImage.setImageBitmap(imageBitmap)
+
         }
     }
     private fun observeLiveDataText(it: UserInfoData){
@@ -130,6 +130,7 @@ class PersonFragment : Fragment() {
             binding.dateOfBirthEditText.isEnabled = false
             binding.thirdNameEditText.isEnabled = false
             binding.profileButtonImage.isClickable = false
+            binding.profileButtonImage.isFocusable = false
             flagRename = false
         }else{
             binding.topPanelRenameButton.setImageResource(R.drawable.ic_done)
@@ -138,6 +139,7 @@ class PersonFragment : Fragment() {
             binding.dateOfBirthEditText.isEnabled = true
             binding.thirdNameEditText.isEnabled = true
             binding.profileButtonImage.isClickable = true
+            binding.profileButtonImage.isFocusable = true
             flagRename = true
         }
     }

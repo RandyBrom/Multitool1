@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/flagImageView"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@android:drawable/editbox_dropdown_light_frame"
+        />
+
+    <ImageButton
+        android:id="@+id/deleteImageButton"
+        style="@style/BasicImageButton"
+        app:srcCompat="@drawable/ic_delete"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_gravity="end"
+        />
+
+    <ImageButton
+        android:id="@+id/renameServerImageButton"
+        style="@style/BasicImageButton"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="10dp"
+        android:layout_gravity="end"
+        app:srcCompat="@drawable/ic_rename" />
+
+    <ImageButton
+        android:id="@+id/syncServerImageButton"
+        style="@style/BasicImageButton"
+        android:layout_gravity="start"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="130dp"
+        app:srcCompat="@drawable/ic_sync" />
+
+    <ImageView
+        android:id="@+id/signalImageView"
+        style="@style/BasicImageButton"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="10dp"
+        app:srcCompat="@drawable/ic_signal_low"
+        />
+
+    <LinearLayout
+        android:id="@+id/serverInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="60dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/EditTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/nameServer"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameServerEditText"
+                style="@style/EditTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/EditTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            app:boxCornerRadiusTopStart="0dp"
+            app:boxCornerRadiusTopEnd="0dp"
+            android:hint="@string/adressServer">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/adressEditText"
+                style="@style/EditTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/EditTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            app:boxCornerRadiusTopStart="0dp"
+            app:boxCornerRadiusTopEnd="0dp"
+            android:hint="@string/publicKeyServer">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/keyServerEditText"
+                style="@style/EditTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/EditTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            app:boxCornerRadiusTopStart="0dp"
+            app:boxCornerRadiusTopEnd="0dp"
+            android:hint="@string/userNameServer">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userNameServerEditText"
+                style="@style/EditTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/EditTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            app:boxCornerRadiusTopStart="0dp"
+            app:boxCornerRadiusTopEnd="0dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            android:hint="@string/userPassServer">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passServerEditText"
+                style="@style/EditTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</FrameLayout>
