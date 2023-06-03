@@ -26,8 +26,6 @@ import java.net.URL
 private val idImageKey: String = "IDIMAGE"
 fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences?, queue: RequestQueue, urlImageKey: String): String{
     var urlImage = ""
-
-
         val stringRequest = StringRequest(
             Request.Method.GET,
             urlImageResorse,

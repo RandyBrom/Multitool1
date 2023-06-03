@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "ru.juraogurcov.multitool"
-        minSdk 26
+        minSdk 25
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -29,6 +29,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.1"
     }
     buildFeatures {
         viewBinding true

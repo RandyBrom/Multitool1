@@ -11,7 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.android.volley.toolbox.Volley
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.juraogurcov.multitool.R
 import ru.juraogurcov.multitool.databinding.FragmentPersonBinding
 import ru.juraogurcov.multitool.viewUtils.addTextChangeListener
@@ -51,7 +55,10 @@ class PersonFragment : Fragment() {
            observeLiveDataText(it)
         }
         personViewModel.imageProfileInfo.observe(viewLifecycleOwner){
-           observeLiveDataImage(it, accountInfoSharedPref)
+           lifecycleScope.launch{
+               observeLiveDataImage(it, accountInfoSharedPref)
+           }
+
         }
         binding.profileButtonImage.setOnClickListener {
             val queue = Volley.newRequestQueue(context)
@@ -69,18 +76,16 @@ class PersonFragment : Fragment() {
      * Проверка обновлений LiveData
      */
 
-    private fun observeLiveDataImage(it: UserImageData, sharedPreferences: SharedPreferences?){
+    private suspend fun observeLiveDataImage(it: UserImageData, sharedPreferences: SharedPreferences?){
         if(it.url != null) {
-            Thread {
-                kotlin.run {
-                    val bitmapImageAvatar = getBitmapFromUrl(it.url)
-                    val imagesDir = context?.filesDir
-                    saveImageFromBitmap(imagesDir, bitmapImageAvatar, sharedPreferences)
-                    Handler(Looper.getMainLooper()).post {
-                        binding.profileButtonImage.setImageBitmap(bitmapImageAvatar)
-                    }
+            withContext(Dispatchers.IO){
+                val bitmapImageAvatar = getBitmapFromUrl(it.url)
+                val imagesDir = context?.filesDir
+                saveImageFromBitmap(imagesDir, bitmapImageAvatar, sharedPreferences)
+                withContext(Dispatchers.Main) {
+                    binding.profileButtonImage.setImageBitmap(bitmapImageAvatar)
                 }
-            }.start()
+            }
 
         }
     }
