@@ -4,8 +4,6 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.juraogurcov.multitool.R
+import ru.juraogurcov.multitool.data.UserImageData
+import ru.juraogurcov.multitool.data.UserInfoData
 import ru.juraogurcov.multitool.databinding.FragmentPersonBinding
 import ru.juraogurcov.multitool.viewUtils.addTextChangeListener
 import ru.juraogurcov.multitool.viewUtils.getBitmapFromUrl
@@ -50,9 +50,6 @@ class PersonFragment : Fragment() {
         if(accountInfoSharedPref?.getString(pathImageKey, null) != null){
             val imageBitmap =  BitmapFactory.decodeFile(accountInfoSharedPref.getString(pathImageKey, null))
             binding.profileButtonImage.setImageBitmap(imageBitmap)
-        }
-        personViewModel.textUserInfoData.observe(viewLifecycleOwner) {  //getting updates from view model
-           observeLiveDataText(it)
         }
         personViewModel.imageProfileInfo.observe(viewLifecycleOwner){
            lifecycleScope.launch{
@@ -89,20 +86,7 @@ class PersonFragment : Fragment() {
 
         }
     }
-    private fun observeLiveDataText(it: UserInfoData){
-        if(it.firstNameUser != null) {
-        binding.firstNameEditText.setText(it.firstNameUser)
-        }
-        if(it.secondNameUser != null) {
-        binding.secondNameEditText.setText(it.secondNameUser)
-        }
-        if(it.thirdNameUser != null) {
-        binding.thirdNameEditText.setText(it.thirdNameUser)
-        }
-        if(it.dayOfBirthUser != null) {
-        binding.dateOfBirthEditText.setText(it.dayOfBirthUser)
-        }
-    }
+
 
     /**
      * Прослушивание и запись данных из EditText
@@ -112,7 +96,7 @@ class PersonFragment : Fragment() {
         val secondName = accountInfoSharedPref?.getString(secondNameKey, null)
         val thirdName = accountInfoSharedPref?.getString(thirdNameKey, null)
         val dayOfBirth = accountInfoSharedPref?.getString(dateOfBirthKey, null)
-        personViewModel.setUserInfo(UserInfoData(firstName, secondName, thirdName, dayOfBirth))
+      //  personViewModel.setUserInfo(UserInfoData(firstName, secondName, thirdName, dayOfBirth))
         binding.firstNameEditText.addTextChangeListener {
             accountInfoSharedPref?.edit()?.putString(firstNameKey, it.toString() )?.apply()
         }

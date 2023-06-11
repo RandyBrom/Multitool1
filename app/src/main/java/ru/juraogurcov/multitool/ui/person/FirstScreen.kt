@@ -1,7 +1,9 @@
 package ru.juraogurcov.multitool.ui.person
 
 import androidx.compose.foundation.background
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,20 +15,30 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.asFlow
 import ru.juraogurcov.multitool.R
+import ru.juraogurcov.multitool.data.DataStoreManager
+import ru.juraogurcov.multitool.data.MainBD
+import ru.juraogurcov.multitool.data.UserInfoData
 
 @Preview
 @Composable
-fun FirstScreen() {
+fun FirstScreen(personViewModel: PersonViewModel = viewModel()) {
+    val localContext = LocalContext.current.applicationContext
+    val mainBD = MainBD.getMainBD(localContext)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +71,7 @@ fun FirstScreen() {
                 modifier = Modifier.fillMaxSize()
             )
         }
-        Column(
+        Box(
             modifier = Modifier
                 .padding(0.dp, 44.dp)
                 .align(Alignment.CenterHorizontally)
@@ -73,76 +85,93 @@ fun FirstScreen() {
                         topStart = 15.dp, topEnd = 15.dp, bottomStart = 15.dp, bottomEnd = 15.dp
                     )
                 )
-
         ) {
-            val textStateFirstName = remember {
-                mutableStateOf("")
-            }
-            val textStateSecondName = remember {
-                mutableStateOf("")
-            }
-            val textStateThirdName = remember {
-                mutableStateOf("")
-            }
-            val textStateDate = remember {
-                mutableStateOf("")
-            }
-            TextField(
-                value = textStateFirstName.value,
-                onValueChange = {
-                    textStateFirstName.value = it
-                },
-                modifier = Modifier
-                    .border(
-                        width = 0.dp,
-                        color = Color.Transparent,
-                        shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
-                    )
-                    .background(
-                        colorResource(id = R.color.light_gray),
-                        shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
-                    ),
+            Column() {
+                val textStateFirstName = remember {
+                    mutableStateOf(mainBD.getDao().getUserInfo().value!!.firstNameUser)
+                }
+                val textStateSecondName = remember {
+                    mutableStateOf(mainBD.getDao().getUserInfo().value!!.secondNameUser)
+                }
+                val textStateThirdName = remember {
+                    mutableStateOf(mainBD.getDao().getUserInfo().value!!.thirdNameUser)
+                }
+                val textStateDate = remember {
+                    mutableStateOf(mainBD.getDao().getUserInfo().value!!.dayOfBirthUser)
+                }
+//                LaunchedEffect(key1 = true) {
+//                    val firstNameUser = mainBD.getDao().getUserInfo().value?.firstNameUser
+//                    val dayOfBirth = mainBD.getDao().getUserInfo().value?.dayOfBirthUser
+//                    val secondNameUser = mainBD.getDao().getUserInfo().value?.firstNameUser
+//                    val thirdNameUser = mainBD.getDao().getUserInfo().value?.firstNameUser
+//                }
+                TextField(
+                    value = textStateFirstName.value,
+                    onValueChange = {
+                        personViewModel.saveUserFirstName(it)
+                    },
+                    modifier = Modifier
+                        .border(
+                            width = 0.dp,
+                            color = Color.Transparent,
+                            shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
+                        )
+                        .background(
+                            colorResource(id = R.color.light_gray),
+                            shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
+                        ),
+                    singleLine = true
 
-
-            )
-            TextField(
-                value = textStateSecondName.value, onValueChange = {
-                    textStateSecondName.value = it
-                },
-                Modifier
-                    .border(
-                        width = 0.dp, color = Color.Transparent
-                    )
-                    .background(colorResource(id = R.color.light_gray))
-            )
-            TextField(
-                value = textStateThirdName.value, onValueChange = {
-                    textStateThirdName.value = it
-                },
-                Modifier
-                    .border(
-                        width = 0.dp, color = Color.Transparent
-                    )
-                    .background(colorResource(id = R.color.light_gray))
-            )
-            TextField(
-                value = textStateDate.value, onValueChange = {
-                    textStateDate.value = it
-                },
-                Modifier
-                    .border(
-                        width = 0.dp,
-                        color = Color.Transparent,
-                        shape = RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-                    )
-                    .background(
-                        colorResource(id = R.color.light_gray),
-                        shape = RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
-                    )
-            )
+                )
+                TextField(
+                    value = textStateSecondName.value, onValueChange = {
+                        personViewModel.saveUserSecondName(it)
+                    },
+                    Modifier
+                        .border(
+                            width = 0.dp, color = Color.Transparent
+                        )
+                        .background(colorResource(id = R.color.light_gray)),
+                    singleLine = true
+                )
+                TextField(
+                    value = textStateThirdName.value, onValueChange = {
+                        personViewModel.saveUserThirdName(it)
+                    },
+                    Modifier
+                        .border(
+                            width = 0.dp, color = Color.Transparent
+                        )
+                        .background(colorResource(id = R.color.light_gray)),
+                    singleLine = true
+                )
+                TextField(
+                    value = textStateDate.value, onValueChange = {
+                        personViewModel.saveUserDOB(it)
+                    },
+                    Modifier
+                        .border(
+                            width = 0.dp,
+                            color = Color.Transparent,
+                            shape = RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
+                        )
+                        .background(
+                            colorResource(id = R.color.light_gray),
+                            shape = RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp)
+                        ),
+                    singleLine = true
+                )
+            }
         }
+
     }
 }
+
+
+suspend fun saveChangesUserData(info: UserInfoData, dataStoreManager: DataStoreManager) {
+    dataStoreManager.saveUserProfileData(info)
+}
+
 
 /*
 
