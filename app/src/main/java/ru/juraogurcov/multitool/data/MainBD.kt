@@ -32,5 +32,5 @@ interface Dao {
     @Upsert
     suspend fun replaceUserInfo(userImageData: UserImageData)
     @Query("SELECT * FROM UserInfoData")
-    fun getUserInfo(): LiveData<UserInfoData>
+    fun getUserInfo(): Flow<UserInfoData>
 }

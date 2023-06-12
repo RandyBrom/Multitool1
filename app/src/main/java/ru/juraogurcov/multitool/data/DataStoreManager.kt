@@ -20,14 +20,14 @@ class DataStoreManager(val context: Context) {
         }
     }
 
-    fun getUserProfileData() = context.dataStore.data.map { pref ->
-        return@map UserInfoData(
-            pref[stringPreferencesKey("firstNameUser")] ?: "",
-            pref[stringPreferencesKey("secondNameUser")] ?: "",
-            pref[stringPreferencesKey("thirdNameUser")] ?: "",
-            pref[stringPreferencesKey("dayOfBirthUser")] ?: ""
-        )
-    }
+//    fun getUserProfileData() = context.dataStore.data.map { pref ->
+//        return@map UserInfoData(
+//            pref[stringPreferencesKey("firstNameUser")] ?: "",
+//            pref[stringPreferencesKey("secondNameUser")] ?: "",
+//            pref[stringPreferencesKey("thirdNameUser")] ?: "",
+//            pref[stringPreferencesKey("dayOfBirthUser")] ?: ""
+//        )
+//    }
 
     suspend fun saveUserImageData(userImageData: UserImageData) {
         context.dataStore.edit { pref ->

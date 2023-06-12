@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity("UserInfoData")
 data class UserInfoData(
     @PrimaryKey(false)
+    var id:Int? = 0 ,
     var firstNameUser: String = "",
     var secondNameUser: String = "",
     var thirdNameUser: String = "",

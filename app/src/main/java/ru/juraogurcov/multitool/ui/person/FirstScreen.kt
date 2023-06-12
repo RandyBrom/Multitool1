@@ -35,10 +35,10 @@ import ru.juraogurcov.multitool.data.UserInfoData
 
 @Preview
 @Composable
-fun FirstScreen(personViewModel: PersonViewModel = viewModel()) {
+fun FirstScreen() {
     val localContext = LocalContext.current.applicationContext
     val mainBD = MainBD.getMainBD(localContext)
-
+    val personViewModel = PersonViewModel(mainBD)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -88,16 +88,16 @@ fun FirstScreen(personViewModel: PersonViewModel = viewModel()) {
         ) {
             Column() {
                 val textStateFirstName = remember {
-                    mutableStateOf(mainBD.getDao().getUserInfo().value!!.firstNameUser)
+                    mutableStateOf(personViewModel.state.firstNameUser)
                 }
                 val textStateSecondName = remember {
-                    mutableStateOf(mainBD.getDao().getUserInfo().value!!.secondNameUser)
+                    mutableStateOf(personViewModel.state.secondNameUser)
                 }
                 val textStateThirdName = remember {
-                    mutableStateOf(mainBD.getDao().getUserInfo().value!!.thirdNameUser)
+                    mutableStateOf(personViewModel.state.thirdNameUser)
                 }
                 val textStateDate = remember {
-                    mutableStateOf(mainBD.getDao().getUserInfo().value!!.dayOfBirthUser)
+                    mutableStateOf(personViewModel.state.dayOfBirthUser)
                 }
 //                LaunchedEffect(key1 = true) {
 //                    val firstNameUser = mainBD.getDao().getUserInfo().value?.firstNameUser
@@ -108,7 +108,9 @@ fun FirstScreen(personViewModel: PersonViewModel = viewModel()) {
                 TextField(
                     value = textStateFirstName.value,
                     onValueChange = {
-                        personViewModel.saveUserFirstName(it)
+                        textStateFirstName.value = it
+                        personViewModel.saveUserFirstName(textStateFirstName.value)
+
                     },
                     modifier = Modifier
                         .border(
@@ -125,7 +127,7 @@ fun FirstScreen(personViewModel: PersonViewModel = viewModel()) {
                 )
                 TextField(
                     value = textStateSecondName.value, onValueChange = {
-                        personViewModel.saveUserSecondName(it)
+                        //personViewModel.saveUserSecondName(it)
                     },
                     Modifier
                         .border(
@@ -136,7 +138,7 @@ fun FirstScreen(personViewModel: PersonViewModel = viewModel()) {
                 )
                 TextField(
                     value = textStateThirdName.value, onValueChange = {
-                        personViewModel.saveUserThirdName(it)
+                        //personViewModel.saveUserThirdName(it)
                     },
                     Modifier
                         .border(
@@ -147,7 +149,7 @@ fun FirstScreen(personViewModel: PersonViewModel = viewModel()) {
                 )
                 TextField(
                     value = textStateDate.value, onValueChange = {
-                        personViewModel.saveUserDOB(it)
+                        //personViewModel.saveUserDOB(it)
                     },
                     Modifier
                         .border(
