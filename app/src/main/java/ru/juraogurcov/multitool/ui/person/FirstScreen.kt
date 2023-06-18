@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import ru.juraogurcov.multitool.R
 import ru.juraogurcov.multitool.data.DataStoreManager
 import ru.juraogurcov.multitool.data.MainBD
@@ -88,26 +89,34 @@ fun FirstScreen() {
         ) {
             Column() {
                 val textStateFirstName = remember {
-                    mutableStateOf(personViewModel.state.firstNameUser)
+                    mutableStateOf("firstNameUser")
+
                 }
                 val textStateSecondName = remember {
-                    mutableStateOf(personViewModel.state.secondNameUser)
+                    mutableStateOf("secondNameUser")
                 }
                 val textStateThirdName = remember {
-                    mutableStateOf(personViewModel.state.thirdNameUser)
+                    mutableStateOf("thirdNameUser")
                 }
                 val textStateDate = remember {
-                    mutableStateOf(personViewModel.state.dayOfBirthUser)
+                    mutableStateOf("dayOfBirthUser")
                 }
-//                LaunchedEffect(key1 = true) {
-//                    val firstNameUser = mainBD.getDao().getUserInfo().value?.firstNameUser
-//                    val dayOfBirth = mainBD.getDao().getUserInfo().value?.dayOfBirthUser
-//                    val secondNameUser = mainBD.getDao().getUserInfo().value?.firstNameUser
-//                    val thirdNameUser = mainBD.getDao().getUserInfo().value?.firstNameUser
-//                }
+                LaunchedEffect(key1 = true) {
+                    mainBD.getDao()
+                        .replaceUserInfo(UserInfoData(0, "first", "second", "third", "DAY"))
+                    val dayOfBirth =
+                        mainBD.getDao().getUserInfo().asLiveData().value?.secondNameUser
+                    val firstName = mainBD.getDao().getUserInfo().asLiveData().value?.firstNameUser
+                    val secondNameUser =
+                        mainBD.getDao().getUserInfo().asLiveData().value?.firstNameUser
+                    val thirdNameUser =
+                        mainBD.getDao().getUserInfo().asLiveData().value?.firstNameUser
+                    println(firstName + " 11111 " + secondNameUser + " 22222 ")
+                }
                 TextField(
                     value = textStateFirstName.value,
                     onValueChange = {
+                        println(personViewModel.state.value?.firstNameUser + " sdsdd")
                         textStateFirstName.value = it
                         personViewModel.saveUserFirstName(textStateFirstName.value)
 

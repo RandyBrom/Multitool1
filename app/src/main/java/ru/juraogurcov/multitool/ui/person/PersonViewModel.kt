@@ -28,12 +28,12 @@ class PersonViewModel(mainBD: MainBD) : ViewModel() {
     val imageProfileInfo: LiveData<UserImageData> = _imageProfileInfo
     private val _dao = mainBD.getDao()
 
-    private val _state = _dao.getUserInfo().asLiveData().value
-    val state = checkState(_state)
+    val _state = _dao.getUserInfo().asLiveData()
+    val state = _state
 
-    fun checkState(state: UserInfoData?): UserInfoData {
-        return if (state?.firstNameUser == null)
-            UserInfoData(firstNameUser = "")
+    fun checkState(state: LiveData<UserInfoData>): LiveData<UserInfoData> {
+        return if (state.value?.firstNameUser == null)
+            _state
         else
             state
     }
@@ -41,7 +41,10 @@ class PersonViewModel(mainBD: MainBD) : ViewModel() {
     fun saveUserFirstName(name: String) {
         viewModelScope.launch {
             _dao.replaceUserInfo(UserInfoData(firstNameUser = name))
-            _state?.firstNameUser = name
+            val _state = _dao.getUserInfo().asLiveData()
+            println(name)
+            println(_state.value?.firstNameUser)
+            println(_dao.getUserInfo().asLiveData().value?.firstNameUser)
         }
     }
 //
