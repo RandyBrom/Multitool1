@@ -15,25 +15,34 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 private val idImageKey: String = "IDIMAGE"
-fun getHTTPSSource(urlImageResorse: String, sharedPreferences: SharedPreferences?, queue: RequestQueue, urlImageKey: String): String{
+fun getHTTPSSource(
+    urlImageResorse: String,
+    sharedPreferences: SharedPreferences?,
+    queue: RequestQueue,
+    urlImageKey: String
+): String {
     var urlImage = ""
-        val stringRequest = StringRequest(
-            Request.Method.GET,
-            urlImageResorse,
-            { response ->
-
-                urlImage = JSONArray(response).getJSONObject(0).getString("url")
-                sharedPreferences?.edit()?.putString(urlImageKey, JSONArray(response).getJSONObject(0).getString("url"))?.apply()
-                sharedPreferences?.edit()?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))?.apply()
-                Log.d("Tag", urlImage)
-                PersonViewModel.setUserAvatarInfo(UserImageData("", urlImage))
-            },
-            {
+    val personViewModel = PersonViewModel()
+    val stringRequest = StringRequest(
+        Request.Method.GET,
+        urlImageResorse,
+        { response ->
+            urlImage = JSONArray(response).getJSONObject(0).getString("url")
+            sharedPreferences?.edit()
+                ?.putString(urlImageKey, JSONArray(response).getJSONObject(0).getString("url"))
+                ?.apply()
+            sharedPreferences?.edit()
+                ?.putString(idImageKey, JSONArray(response).getJSONObject(0).getString("id"))
+                ?.apply()
+            Log.d("Tag", urlImage)
+            personViewModel.setUserAvatarInfo(UserImageData("", urlImage))
+        },
+        {
             Log.d("Tag", "No Result")
-            }
-        )
-        queue.add(stringRequest)
-        queue.start()
+        }
+    )
+    queue.add(stringRequest)
+    queue.start()
     return urlImage
 }
 
@@ -52,7 +61,11 @@ fun getBitmapFromUrl(uRL: String): Bitmap? {
     return null
 }
 
-fun saveImageFromBitmap(imagesDir: File?, imageBitmap: Bitmap?, sharedPreferences: SharedPreferences?){
+fun saveImageFromBitmap(
+    imagesDir: File?,
+    imageBitmap: Bitmap?,
+    sharedPreferences: SharedPreferences?
+) {
     val filename = "ic_avatar.jpg"
     var fos: OutputStream? = null
     val image = File(imagesDir, filename)

@@ -1,72 +1,54 @@
 package ru.juraogurcov.multitool.ui.person
 
+import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.juraogurcov.multitool.data.Dao
-import ru.juraogurcov.multitool.data.MainBD
+import ru.juraogurcov.multitool.AppContext
 import ru.juraogurcov.multitool.data.UserImageData
 import ru.juraogurcov.multitool.data.UserInfoData
 
-class PersonViewModel(mainBD: MainBD) : ViewModel() {
+class PersonViewModel() : ViewModel() {
+    val firstNameKey = "FIRST_NAME"
+    val secondNameKey = "SECOND_NAME"
+    val thirdNameKey = "THIRD_NAME"
+    val dateOfBirthKey = "DATE_OF_BIRTH_NAME"
 
     companion object {
-        fun setUserAvatarInfo(userAvatarInfo: UserImageData) {  // sending package of data to class with list of data types
-            _imageProfileInfo.value = userAvatarInfo
-        }
-
         private val _imageProfileInfo = MutableLiveData<UserImageData>()
+        private val _userProfileInfo = MutableLiveData<UserInfoData>()
+        private val fileUserInfo =
+            AppContext.getAppContext().getSharedPreferences("AccountInfo", Context.MODE_PRIVATE)
+
+    }
+
+    fun setUserAvatarInfo(userAvatarInfo: UserImageData) {  // sending package of data to class with list of data types
+        _imageProfileInfo.value = userAvatarInfo
     }
 
     val imageProfileInfo: LiveData<UserImageData> = _imageProfileInfo
-    private val _dao = mainBD.getDao()
-
-    val _state = _dao.getUserInfo().asLiveData()
-    val state = _state
-
-    fun checkState(state: LiveData<UserInfoData>): LiveData<UserInfoData> {
-        return if (state.value?.firstNameUser == null)
-            _state
-        else
-            state
-    }
-
-    fun saveUserFirstName(name: String) {
+    val userProfileInfo: LiveData<UserInfoData> = _userProfileInfo
+    fun setUserInfo(userInfoData: UserInfoData) =
         viewModelScope.launch {
-            _dao.replaceUserInfo(UserInfoData(firstNameUser = name))
-            val _state = _dao.getUserInfo().asLiveData()
-            println(name)
-            println(_state.value?.firstNameUser)
-            println(_dao.getUserInfo().asLiveData().value?.firstNameUser)
+            fileUserInfo.edit().putString(firstNameKey, userInfoData.firstNameUser).apply()
+            fileUserInfo.edit().putString(secondNameKey, userInfoData.secondNameUser).apply()
+            fileUserInfo.edit().putString(thirdNameKey, userInfoData.thirdNameUser).apply()
+            fileUserInfo.edit().putString(dateOfBirthKey, userInfoData.dayOfBirthUser).apply()
+            _userProfileInfo.value = userInfoData
         }
+
+    fun getUserInfo(): UserInfoData {
+        val userInfoData = UserInfoData(
+            fileUserInfo.getString(firstNameKey, "")!!,
+            fileUserInfo.getString(secondNameKey, "")!!,
+            fileUserInfo.getString(thirdNameKey, "")!!,
+            fileUserInfo.getString(dateOfBirthKey, "")!!
+        )
+        _userProfileInfo.value = userInfoData
+        return userInfoData
     }
-//
-//    fun saveUserSecondName(name: String) {
-//        viewModelScope.launch {
-//            dao.replaceUserInfo(UserInfoData(secondNameUser = name))
-//        }
-//
-//    }
-//
-//    fun saveUserThirdName(name: String) {
-//        viewModelScope.launch {
-//            dao.replaceUserInfo(UserInfoData(thirdNameUser = name))
-//        }
-//
-//    }
-//
-//    fun saveUserDOB(dOB: String) {
-//        viewModelScope.launch {
-//            dao.replaceUserInfo(UserInfoData(dayOfBirthUser = dOB))
-//        }
-//
-//    }
+
 
 }
